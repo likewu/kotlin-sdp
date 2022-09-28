@@ -2,7 +2,8 @@ buildscript {
     ext {
         kotlinVersion = '1.6.20'
         kotlinGradlePluginVersion = "1.6.20"
-        junitPlatformGradlePluginVersion = "1.0.2"
+        junitPlatformGradlePluginVersion = "1.2.0"
+        //Now that Gradle 4.6 has been released and provides native support for running tests on the JUnit Platform, we can go ahead and deprecate our custom plugin
         dokkaGradlePluginVersion = "1.7.10"
         detektGradlePluginVersion = "1.21.0"
     }
@@ -65,12 +66,14 @@ apply plugin: "io.gitlab.arturbosch.detekt"
 
 //https://detekt.dev/docs/gettingstarted/gradle
 detekt {
-    config = files("$projectDir/detekt.yml")
+    config = files("detekt.yml")
 
     source = files(
             "src/main/kotlin",
             "gensrc/main/kotlin"
     )
+
+    basePath = projectDir
 }
 
 apply plugin: "application"
@@ -80,7 +83,7 @@ mainClassName = "org.vld.sdp.MainKt"
 ext {
     kotlinVersion = "1.6.20"
     junitJupiterVersion = "5.0.2"
-    junitPlatformVersion = "1.0.2"
+    junitPlatformVersion = "1.2.0"
     assertJVersion = "3.8.0"
     mockitoVersion = "2.12.0"
     ktLintVersion = "0.14.0"
@@ -105,7 +108,7 @@ dependencies {
     testRuntime "org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion"
     testRuntime "org.junit.platform:junit-platform-console-standalone:$junitPlatformVersion"
     ktlint "com.github.shyiko:ktlint:$ktLintVersion"
-    dokkaHtmlPlugin "org.jetbrains.dokka:kotlin-as-java-plugin:1.7.10"
+    //dokkaHtmlPlugin "org.jetbrains.dokka:kotlin-as-java-plugin:1.7.10"
 }
 
 // Usage: $ gradle junitPlatformTestConsole -PincludePackage=org.vld.sdp.behavioral
